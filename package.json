@@ -4,7 +4,7 @@
   "description": "Find your vacation spot",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 0",
     "start": "node server.js"
   },
   "author": "Parth Patel",
