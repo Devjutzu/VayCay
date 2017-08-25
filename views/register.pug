@@ -1,0 +1,21 @@
+extends layout
+
+block body
+    .row
+        .col-12
+            .darkbg
+                h2 VAYCAY
+            .card
+                h2= title
+                .login
+                    form(action="/register", method="post")
+                        label.lbl(for="email") Email
+                        input(type="email" id="email" name="email")
+                        label.lbl(for="password") Password
+                        input(type="password" id="password" name="password")
+                        label.lbl(for="password-confirm") Confirm Password
+                        input(type="password" id="password-confirm" name="password-confirm")
+                        input.btn(type="submit", value="Register >")
+                    a(href="/login") Already have an account? Log In >
+                if message
+                    h1.warn= message 

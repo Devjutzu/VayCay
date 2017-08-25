@@ -1,0 +1,15 @@
+- isOnly (not register new account)
+- add thumnail from cloudiary if it exists
+
+Get Version by re install
+    "passport": "*",
+    "passport-http": "*",
+    "passport-local": "*",
+    "multer-storage-cloudinary": "*",
+    "cloudinary": "*",
+    "mongoose": "*"
+        "express-session": "*",
+    "express-validator": "*",
+    "express-messages": "*",
+    "pug": "*",
+        "bcryptjs": "*",

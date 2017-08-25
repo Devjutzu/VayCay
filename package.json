@@ -1,0 +1,32 @@
+{
+  "name": "vaycay",
+  "version": "1.0.0",
+  "description": "Find your vacation spot",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Parth Patel",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "*",
+    "body-parser": "~1.17.1",
+    "cloudinary": "*",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.3",
+    "express": "^4.15.4",
+    "express-messages": "*",
+    "express-session": "*",
+    "express-validator": "*",
+    "mongoose": "*",
+    "morgan": "~1.8.1",
+    "multer-storage-cloudinary": "*",
+    "passport": "*",
+    "passport-http": "*",
+    "passport-local": "*",
+    "pug": "*",
+    "serve-favicon": "~2.4.2"
+  }
+}
