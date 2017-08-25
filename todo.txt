@@ -1,2 +1,1 @@
-- isOnly (not register new account)
 - add thumnail from cloudiary if it exists

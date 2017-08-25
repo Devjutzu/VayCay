@@ -216,9 +216,9 @@ router.post('/add', isLoggedIn, upload.single('photo'), (req, res) => {
     }
   }
   cloudinary.config({
-    cloud_name: 'dhuxkntcu',
-    api_key: '697694359827511',
-    api_secret: 'WIYHQFBfqdA_1SXe_FVdh3OnxK4'
+    cloud_name: options.options.cloud_name,
+    api_key: options.options.api_key,
+    api_secret: options.options.api_secret
   });
   cloudinary.uploader.upload(req.file.path, function (result) {
     console.log(result);
