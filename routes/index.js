@@ -17,7 +17,13 @@ const upload = multer({
   dest: '../public/img/uploads'
 });
 const cloudinary = require('cloudinary')
+
 const options = require('../config')
+cloudinary.config({
+  cloud_name: options.options.cloud_name,
+  api_key: options.options.api_key,
+  api_secret: options.options.api_secret
+});
 
 function isLoggedIn(req, res, next) {
   if (!req.user) {
@@ -215,11 +221,6 @@ router.post('/add', isLoggedIn, upload.single('photo'), (req, res) => {
       })
     }
   }
-  cloudinary.config({
-    cloud_name: options.options.cloud_name,
-    api_key: options.options.api_key,
-    api_secret: options.options.api_secret
-  });
   cloudinary.uploader.upload(req.file.path, function (result) {
     console.log(result);
     Place.create({
@@ -245,11 +246,6 @@ router.post('/edit/:id', isLoggedIn, isOwner, upload.single('photo'), (req, res)
       res.redirect(`/edit/${req.params.id}` /* , {message} */ )
     }
   }
-  cloudinary.config({
-    cloud_name: options.options.cloud_name,
-    api_key: options.options.api_key,
-    api_secret: options.options.api_secret
-  });
   cloudinary.uploader.upload(req.file.path, function (result) {
     console.log(result);
     Place.findByIdAndUpdate(req.params.id, {
