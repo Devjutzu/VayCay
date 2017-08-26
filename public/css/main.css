@@ -11,7 +11,6 @@ h1,h2,h3,h4,h5,h6 {
 }
 p,a,li,blockquote,label {
   font-family: "Vollkorn", serif;
-  font-weight: 400;
 }
 body {
     margin: 0;
@@ -31,7 +30,7 @@ body {
 } 
 nav{
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.70);
+    background-color: rgba(255, 255, 255, 0.80);
     margin-bottom:20px;
 }
 a{text-decoration: none;color:rgb(0, 0, 0)}
@@ -47,9 +46,10 @@ a{text-decoration: none;color:rgb(0, 0, 0)}
     font-size: 20px;
     color:orangered;
     padding-left:25px;
+    
 }
 .card{
-    background-color:rgba(255,255,255,0.7);
+    background-color:rgba(255,255,255,0.8);
     text-align: center;
     color:black;
     padding:10px;
