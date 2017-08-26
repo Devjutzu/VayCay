@@ -24,7 +24,6 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     color: rgb(0, 0, 0);
-    font-family: 'Satisfy', cursive;
     scroll-behavior: smooth;
     overflow: scroll;
 } 
