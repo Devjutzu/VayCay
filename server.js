@@ -16,7 +16,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -84,14 +84,14 @@ app.use('*', function(req, res) {
 let server;
 
 // this function connects to our database, then starts the server
-function runServer(databaseUrl=DATABASE_URL, port=PORT) {
+function runServer(DATABASE_URL,PORT) {
   return new Promise((resolve, reject) => {
-    mongoose.connect(databaseUrl, { useMongoClient: true }, err => {
+    mongoose.connect(DATABASE_URL, err => {
       if (err) {
         return reject(err);
       }
-      server = app.listen(port, () => {
-        console.log(`Your app is listening on port ${port}`);
+      server = app.listen(PORT, () => {
+        console.log(`Your app is listening on port ${PORT}`);
         resolve();
       })
       .on('error', err => {
