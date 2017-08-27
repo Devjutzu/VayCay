@@ -1,0 +1,11 @@
+{
+    "env": {
+        "NODE_ENV": "production",
+        "options":{
+            "cloud_name": "dhuxkntcu", 
+           "api_key": "697694359827511", 
+            "api_secret": "WIYHQFBfqdA_1SXe_FVdh3OnxK4"
+        },
+        "MONGO_URL": "mongodb://TALES:TALES@ds127341.mlab.com:27341/vaycay"
+    }
+  }

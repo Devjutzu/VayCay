@@ -7,7 +7,7 @@ block content
             .card
                 h2 Edit #{place.locationName}
                 .add-form.row
-                    form(action=`/edit/${place.id}`, method="post",enctype="multipart/form-data")
+                    form(action=`/edit/${place.id}`, method="post"/*,enctype="multipart/form-data"*/)
                         label.row(for="location") Location Name
                         input.row(type="text" id="location" name="locationName" value=place.locationName)
                         p Select all that apply to the Venue
@@ -18,7 +18,7 @@ block content
                                 else
                                     input.checkbox.hidden(name='activities', id=activity, type='checkbox',value=activity)
                             label.checkbox-label.col-3(for=activity) #{activity}
-                        input(type="file", name="photo",placeholder='Paste URL for image', value=place.photo)
+                        input(type="text", name="photo",placeholder='Paste URL for image', value=place.photo)
                         p Description
                         textarea(name="description", cols="30", rows="5",value=place.description)= place.description
                         input.btn(type="submit", value="Submit >")

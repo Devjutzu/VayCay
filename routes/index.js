@@ -12,18 +12,18 @@ const bcrypt = require('bcryptjs')
 const passport = require('passport')
 const path = require('path')
 const LocalStrategy = require('passport-local').Strategy;
-const multer = require('multer');
+/*const multer = require('multer');
 const upload = multer({
   dest: '../public/img/uploads'
 });
 const cloudinary = require('cloudinary')
 
-const options = require('../config')
+const { options } = process.env
 cloudinary.config({
-  cloud_name: options.options.cloud_name,
-  api_key: options.options.api_key,
-  api_secret: options.options.api_secret
-});
+  cloud_name: options.cloud_name,
+  api_key: options.api_key,
+  api_secret: options.api_secret
+});*/
 
 function isLoggedIn(req, res, next) {
   if (!req.user) {
@@ -208,7 +208,7 @@ function hash(newUser, callback) {
     });
   });
 }
-router.post('/add', isLoggedIn, upload.single('photo'), (req, res) => {
+router.post('/add', isLoggedIn, /*upload.single('photo'),*/ (req, res) => {
   const requiredFields = ['locationName', 'description', 'activities'];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
@@ -221,11 +221,11 @@ router.post('/add', isLoggedIn, upload.single('photo'), (req, res) => {
       })
     }
   }
-  cloudinary.uploader.upload(req.file.path, function (result) {
-    console.log(result);
+  //cloudinary.uploader.upload(req.file.path, function (result) {
+    //console.log(result);
     Place.create({
         locationName: req.body.locationName,
-        photo: result.url,
+        photo: req.body.photo,
         description: req.body.description,
         activities: req.body.activities,
         creator: req.user.id
@@ -235,8 +235,8 @@ router.post('/add', isLoggedIn, upload.single('photo'), (req, res) => {
         place
       }))
   });
-});
-router.post('/edit/:id', isLoggedIn, isOwner, upload.single('photo'), (req, res) => {
+//});
+router.post('/edit/:id', isLoggedIn, isOwner,/* upload.single('photo'), */(req, res) => {
   const requiredFields = ['locationName', 'description', 'activities'];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
@@ -246,11 +246,11 @@ router.post('/edit/:id', isLoggedIn, isOwner, upload.single('photo'), (req, res)
       res.redirect(`/edit/${req.params.id}` /* , {message} */ )
     }
   }
-  cloudinary.uploader.upload(req.file.path, function (result) {
-    console.log(result);
+  //cloudinary.uploader.upload(req.file.path, function (result) {
+    //console.log(result);
     Place.findByIdAndUpdate(req.params.id, {
         locationName: req.body.locationName,
-        photo: result.url,
+        photo: req.body.photo,
         description: req.body.description,
         activities: req.body.activities
       }, {
@@ -260,8 +260,8 @@ router.post('/edit/:id', isLoggedIn, isOwner, upload.single('photo'), (req, res)
         message: 'Successfully Updated',
         place
       }))
-  })
-});
+  });
+//});
 router.post('/fave/:id',isLoggedIn, (req, res) => {
   if (!req.user) {
     res.redirect('/login' /* ,{message:'Must be logged in to do that'} */ )
