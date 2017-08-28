@@ -12,18 +12,19 @@ const bcrypt = require('bcryptjs')
 const passport = require('passport')
 const path = require('path')
 const LocalStrategy = require('passport-local').Strategy;
-/*const multer = require('multer');
+const multer = require('multer');
 const upload = multer({
-  dest: '../public/img/uploads'
+  dest: '../tmp/'
 });
 const cloudinary = require('cloudinary')
 
-const { options } = process.env
+const { options } = require('../config')
+
 cloudinary.config({
   cloud_name: options.cloud_name,
   api_key: options.api_key,
   api_secret: options.api_secret
-});*/
+});
 
 function isLoggedIn(req, res, next) {
   if (!req.user) {
@@ -54,9 +55,17 @@ function isOnly(req,res,next){
   })
 }
 /* ALL GET ROUTERS */
-router.get('/', isLoggedIn, (req, res) => res.redirect('/places'));
+router.get('/', isLoggedIn, (req, res) =>{
+  req.flash('info', 'You are already logged in!')
+  res.redirect('/places'); 
+})
 router.get('/login', (req, res) => {
   res.render('login', {
+    title: 'Login'
+  });
+});
+router.get('/loginFailure', (req, res) => {
+  res.render('loginFailure', {
     title: 'Login'
   });
 });
@@ -149,14 +158,14 @@ passport.use(new LocalStrategy({
           message: 'Incorrect username.'
         });
       }
-      bcrypt.compare(password, hash, function (err, res) {
+      bcrypt.compare(password, user.password, function (err, res) {
         if (!res) {
           return done(null, false, {
             message: 'Incorrect password.'
           });
         }
+        return done(null, user);
       });
-      return done(null, user);
     });
   }
 ));
@@ -169,10 +178,31 @@ passport.deserializeUser(function (id, done) {
   });
 });
 /* ALL POST ROUTERS */
-
-router.post('/login', passport.authenticate('local', {
-  successRedirect: '/places'
-}));
+router.post('/login', function(req, res, next) {
+  console.log('hitting login')
+  passport.authenticate('local', function(err, user, info) {
+    
+    if (err) { next(err); }
+    if (!user) { 
+      console.log('failure')
+      return res.redirect('/loginFailure'); 
+    }
+    req.logIn(user, function(err) {
+      console.log("success err", err)
+      if (err) { next(err); }
+      else {
+        console.log("success")
+        return res.redirect('/places');
+      }
+    });
+ 
+  })(req, res, next);
+});
+/*router.post('/login',
+  passport.authenticate('local', {
+  successRedirect: '/places',
+  failureRedirect: '/loginFailure'
+} ))*/
 router.post('/register',isOnly, (req, res) => {
   const requiredFields = ['email', 'password', 'password-confirm'];
   for (let i = 0; i < requiredFields.length; i++) {
@@ -198,6 +228,8 @@ router.post('/register',isOnly, (req, res) => {
     User.create(user)
   })
   res.redirect('/login')
+  req.flash('success', 'You are signed up, Test your login skills')
+  
 })
 
 function hash(newUser, callback) {
@@ -208,7 +240,7 @@ function hash(newUser, callback) {
     });
   });
 }
-router.post('/add', isLoggedIn, /*upload.single('photo'),*/ (req, res) => {
+router.post('/add', isLoggedIn, upload.single('photo'), (req, res) => {
   const requiredFields = ['locationName', 'description', 'activities'];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
@@ -221,20 +253,21 @@ router.post('/add', isLoggedIn, /*upload.single('photo'),*/ (req, res) => {
       })
     }
   }
-  //cloudinary.uploader.upload(req.file.path, function (result) {
-    //console.log(result);
+  cloudinary.uploader.upload(req.file.path, function (result) {
+    console.log(result);
     Place.create({
         locationName: req.body.locationName,
-        photo: req.body.photo,
+        photo: result.secure_url,
         description: req.body.description,
         activities: req.body.activities,
         creator: req.user.id
       })
       .then((place) => res.render('fullPage', {
-        message: 'Successfully Created!',
+        message: req.flash('info') ,
         place
       }))
   });
+})
 //});
 router.post('/edit/:id', isLoggedIn, isOwner,/* upload.single('photo'), */(req, res) => {
   const requiredFields = ['locationName', 'description', 'activities'];

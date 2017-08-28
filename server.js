@@ -5,6 +5,7 @@ const favicon = require('serve-favicon');
 const logger = require('morgan');
 const index = require('./routes/index');
 const app = express();
+const flash = require('connect-flash');
 const mongoose = require('mongoose')
 const { DATABASE_URL, PORT } = require('./config')
 const passport = require('passport')
@@ -48,8 +49,10 @@ app.use(expressValidator({
   }
 }));
 
+app.use(flash());
 
 app.use((req,res,next)=> {
+  res.locals.flashes = req.flash();
   res.locals.user = req.user || null;
   next(); 
 })
@@ -70,11 +73,13 @@ app.use(function(err, req, res, next) {
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
+    console.log('hitting error catch')
   res.status(err.status || 500);
   res.render('error');
 });
 
 app.use('*', function(req, res) {
+  console.log('final catch')
   res.status(404).json({message: 'Not Found'});
 }); 
 

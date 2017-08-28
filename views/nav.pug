@@ -10,6 +10,8 @@ block body
                     if !user
                         li
                             a(href='/login') Login
+                        li
+                            a(href='/register') Register
                     else
                         li
                             a(href='/add') Add
@@ -19,8 +21,19 @@ block body
                             a(href='/places') Places
                         li
                             a(href="/logout") LogOut
-    if message
-        .row.center.card
-            h2.col-12.warn= message
+    block messages
+        -console.log(flashes)
+        if flashes.info
+            .alert.row
+                .info
+                    p=flashes.info
+        if flashes.warn
+            .alert.row
+                .error
+                    p=flashes.error
+        if flashes.success
+            .alert.row
+                .success
+                    p=flashes.success
         
     block content
