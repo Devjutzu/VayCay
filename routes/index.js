@@ -185,7 +185,7 @@ router.post('/login', function(req, res, next) {
     if (err) { next(err); }
     if (!user) { 
       console.log('failure')
-      return res.redirect('/loginFailure'); 
+      return res.redirect('/login'); 
     }
     req.logIn(user, function(err) {
       console.log("success err", err)
@@ -198,11 +198,7 @@ router.post('/login', function(req, res, next) {
  
   })(req, res, next);
 });
-/*router.post('/login',
-  passport.authenticate('local', {
-  successRedirect: '/places',
-  failureRedirect: '/loginFailure'
-} ))*/
+
 router.post('/register',isOnly, (req, res) => {
   const requiredFields = ['email', 'password', 'password-confirm'];
   for (let i = 0; i < requiredFields.length; i++) {
@@ -269,7 +265,7 @@ router.post('/add', isLoggedIn, upload.single('photo'), (req, res) => {
   });
 })
 //});
-router.post('/edit/:id', isLoggedIn, isOwner,/* upload.single('photo'), */(req, res) => {
+router.post('/edit/:id', isLoggedIn, isOwner, upload.single('photo'), (req, res) => {
   const requiredFields = ['locationName', 'description', 'activities'];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
@@ -279,18 +275,18 @@ router.post('/edit/:id', isLoggedIn, isOwner,/* upload.single('photo'), */(req, 
       res.redirect(`/edit/${req.params.id}` /* , {message} */ )
     }
   }
-  //cloudinary.uploader.upload(req.file.path, function (result) {
-    //console.log(result);
+  cloudinary.uploader.upload(req.file.path, function (result) {
+    console.log(result);
     Place.findByIdAndUpdate(req.params.id, {
         locationName: req.body.locationName,
-        photo: req.body.photo,
+        photo: result.secure_url,
         description: req.body.description,
         activities: req.body.activities
       }, {
         new: true
       })
       .then((place) => res.render('fullPage', {
-        message: 'Successfully Updated',
+        message: req.flash('success', 'Successfully Updated'),
         place
       }))
   });

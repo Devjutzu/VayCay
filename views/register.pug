@@ -17,5 +17,17 @@ block body
                         input(type="password" id="password-confirm" name="password-confirm")
                         input.btn(type="submit", value="Register >")
                     a(href="/login") Already have an account? Log In >
-                if message
-                    h1.warn= message 
+    block messages
+        -console.log(flashes)
+        if flashes.info
+            .alert.row
+                .info
+                    p=flashes.info
+        if flashes.warn
+            .alert.row
+                .error
+                    p=flashes.error
+        if flashes.success
+            .alert.row
+                .success
+                    p=flashes.success
