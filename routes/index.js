@@ -290,7 +290,7 @@ router.post('/edit/:id', isLoggedIn, isOwner, upload.single('photo'), (req, res)
         place
       }))
   });
-//});
+});
 router.post('/fave/:id',isLoggedIn, (req, res) => {
   if (!req.user) {
     res.redirect('/login' /* ,{message:'Must be logged in to do that'} */ )
